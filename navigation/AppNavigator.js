@@ -11,6 +11,7 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
         <Stack.Screen
           name="ListaDeCampanhas"
           component={ListaDeCampanhasScreen}
@@ -21,7 +22,6 @@ const AppNavigator = () => {
           component={ListaDePersonagensScreen}
           options={{ title: "Personagens" }}
         />
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -15,10 +15,17 @@ const getByJogadorId = (id) => {
   return axios.get(`${API_URL}/personagem/jogador/${id}`);
 };
 
+const getByCampanhaIdEJogadorId = (campanhaId, jogadorId) => {
+  return axios.get(
+    `${API_URL}/personagem/campanha/${campanhaId}/jogador/${jogadorId}`
+  );
+};
+
 const personagemService = {
   getAll,
   getById,
   getByJogadorId,
+  getByCampanhaIdEJogadorId,
 };
 
 export default personagemService;

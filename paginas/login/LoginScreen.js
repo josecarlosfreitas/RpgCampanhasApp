@@ -1,14 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
-import axios from "axios";
-import Constants from "expo-constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const API_URL = Constants.expoConfig?.extra?.REACT_APP_API_URL;
+import UsuarioService from "../../services/UsuarioService";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+
+  useEffect(() => {
+    const checkUserLoggedIn = async () => {
+      try {
+        const usuario = await AsyncStorage.getItem("usuario");
+        if (usuario) {
+          const parsedUsuario = JSON.parse(usuario);
+          navigation.navigate("ListaDeCampanhas", {
+            usuarioId: parsedUsuario.id,
+          });
+        }
+      } catch (error) {
+        console.error("Erro ao verificar usuário no AsyncStorage:", error);
+      }
+    };
+
+    checkUserLoggedIn();
+  }, []);
 
   const handleLogin = async () => {
     try {
@@ -18,6 +33,7 @@ const LoginScreen = ({ navigation }) => {
 
       navigation.navigate("ListaDeCampanhas", { usuarioId: usuario.id });
     } catch (error) {
+      console.error("Erro ao fazer login:", error);
       if (error.response && error.response.status === 404) {
         Alert.alert("Erro de Login", "Usuário ou senha inválidos.");
       } else {
