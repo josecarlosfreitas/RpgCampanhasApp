@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ListaDeCampanhasScreen from "../paginas/campanhas/ListaDeCampanhasScreen";
 import ListaDePersonagensScreen from "../paginas/personagens/ListaDePersonagensScreen";
+import LoginScreen from "../paginas/login/LoginScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ const AppNavigator = () => {
           component={ListaDePersonagensScreen}
           options={{ title: "Personagens" }}
         />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

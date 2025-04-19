@@ -9,18 +9,20 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import CampanhaService from "../../services/CampanhaService";
 
-const ListaDeCampanhasScreen = () => {
+const ListaDeCampanhasScreen = ({ route }) => {
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigation = useNavigation();
+
+  const { usuarioId } = route.params;
 
   useEffect(() => {
     const fetchCampaigns = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await CampanhaService.getAll();
+        const response = await CampanhaService.getByUsuarioId(usuarioId);
         setCampaigns(response.data);
         setLoading(false);
       } catch (err) {
