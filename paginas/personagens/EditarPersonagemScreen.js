@@ -8,11 +8,14 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  ImageBackground,
+  ScrollView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { getFullImageUrl } from "../../utils/utils";
 import PersonagemService from "../../services/PersonagemService";
 import ImageService from "../../services/ImageService";
+import Card from "../../componentes/Card";
 
 const EditarPersonagemScreen = ({ route, navigation }) => {
   const { personagemId } = route.params;
@@ -119,47 +122,101 @@ const EditarPersonagemScreen = ({ route, navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Editar Personagem</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Nome"
-        value={personagem.nome}
-        onChangeText={(value) => handleInputChange("nome", value)}
-      />
-      <View style={styles.imageContainer}>
-        <Image
-          source={
-            selectedImage
-              ? { uri: selectedImage }
-              : personagem.imagePath
-              ? { uri: getFullImageUrl(personagem.imagePath) }
-              : null
-          }
-          style={styles.image}
-        />
-        <Button title="Selecionar Imagem" onPress={handleSelectImage} />
-      </View>
-      <Button title="Salvar" onPress={handleUpdatePersonagem} />
-      <Button
-        title="Ver Fichas 3DeT"
-        onPress={handleNavigateToFichas}
-        color="#007BFF"
-      />
-    </View>
+    <ImageBackground
+      source={require("../../assets/fundo/fundoCampanha.png")}
+      style={styles.background}
+    >
+      <ScrollView style={styles.container}>
+        <Card title="Informações do Personagem">
+          <Text style={styles.titleInput}>Nome:</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Nome"
+            value={personagem.nome}
+            onChangeText={(value) => handleInputChange("nome", value)}
+          />
+        </Card>
+        <Card title="Imagem do Personagem">
+          <View style={styles.imageContainer}>
+            <Image
+              source={
+                selectedImage
+                  ? { uri: selectedImage }
+                  : personagem.imagePath
+                  ? { uri: getFullImageUrl(personagem.imagePath) }
+                  : null
+              }
+              style={styles.image}
+            />
+            <Button
+              title="Selecionar Imagem"
+              color="#8B4513"
+              buttonStyle={{
+                backgroundColor: "#8B4513",
+                borderRadius: 10,
+              }}
+              titleStyle={{
+                fontFamily: "MedievalSharp",
+                color: "#FFD700",
+              }}
+              onPress={handleSelectImage}
+            />
+          </View>
+        </Card>
+        <Card>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Salvar"
+              color="#8B4513"
+              buttonStyle={{
+                backgroundColor: "#8B4513",
+                borderRadius: 10,
+              }}
+              titleStyle={{
+                fontFamily: "MedievalSharp",
+                color: "#FFD700",
+              }}
+              onPress={handleUpdatePersonagem}
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Ver Fichas 3DeT"
+              color="#8B4513"
+              buttonStyle={{
+                backgroundColor: "#8B4513",
+                borderRadius: 10,
+                marginTop: 16,
+              }}
+              titleStyle={{
+                fontFamily: "MedievalSharp",
+                color: "#FFD700",
+              }}
+              onPress={handleNavigateToFichas}
+            />
+          </View>
+        </Card>
+      </ScrollView>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: "cover",
+  },
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#f0f0f0",
   },
   title: {
     fontSize: 24,
+    fontFamily: "Roboto",
     fontWeight: "bold",
     marginBottom: 16,
+    color: "#000",
+    textAlign: "center",
   },
   input: {
     height: 40,
@@ -180,10 +237,16 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 8,
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  buttonContainer: {
+    marginBottom: 16,
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  titleInput: {
+    fontFamily: "MedievalSharp",
+    fontSize: 24,
+    color: "#000",
+    fontWeight: "medium",
   },
 });
 

@@ -175,7 +175,6 @@ const EditarFicha3DeTScreen = ({ route, navigation }) => {
         onChangeText={(value) => handleInputChange("historia", value)}
       />
 
-      {/* Seção: Imagem */}
       <Text style={styles.sectionTitle}>Imagem</Text>
       <Image
         source={
@@ -187,10 +186,13 @@ const EditarFicha3DeTScreen = ({ route, navigation }) => {
         }
         style={styles.image}
       />
-      <Button title="Selecionar Imagem" onPress={handleSelectImage} />
+      <View style={styles.buttonContainer}>
+        <Button title="Selecionar Imagem" onPress={handleSelectImage} />
+      </View>
 
-      {/* Botão de Salvar */}
-      <Button title="Salvar" onPress={handleSaveFicha} />
+      <View style={styles.buttonContainer}>
+        <Button title="Salvar" onPress={handleSaveFicha} />
+      </View>
     </ScrollView>
   );
 };
@@ -225,6 +227,9 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 8,
+    marginBottom: 16,
+  },
+  buttonContainer: {
     marginBottom: 16,
   },
   loadingContainer: {
