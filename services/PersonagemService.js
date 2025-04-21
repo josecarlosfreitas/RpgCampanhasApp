@@ -21,11 +21,19 @@ const getByCampanhaIdEJogadorId = (campanhaId, jogadorId) => {
   );
 };
 
-const personagemService = {
+const update = (id, personagem) => {
+  return axios.put(`${API_URL}/personagem/${id}`, {
+    ...personagem,
+    jogadorNome: "",
+  });
+};
+
+const PersonagemService = {
   getAll,
   getById,
   getByJogadorId,
   getByCampanhaIdEJogadorId,
+  update,
 };
 
-export default personagemService;
+export default PersonagemService;

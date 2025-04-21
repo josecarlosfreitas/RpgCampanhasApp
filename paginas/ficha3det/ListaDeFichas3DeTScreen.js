@@ -8,52 +8,42 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { useIsFocused } from "@react-navigation/native";
-import PersonagemService from "../../services/PersonagemService";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import Ficha3detService from "../../services/Ficha3detService";
 import { getFullImageUrl } from "../../utils/utils";
 
-const ListaDePersonagensScreen = ({ route, navigation }) => {
-  const { campanhaId } = route.params;
+const ListaDeFichas3DeTScreen = ({ route, navigation }) => {
+  const { personagemId } = route.params;
 
-  const [personagens, setPersonagens] = useState([]);
+  const [fichas, setFichas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const isFocused = useIsFocused();
-
-  const fetchPersonagens = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const usuario = await AsyncStorage.getItem("usuario");
-      if (!usuario) {
-        throw new Error("Usuário não encontrado no AsyncStorage.");
-      }
-      const { id: usuarioId } = JSON.parse(usuario);
-      const response = await PersonagemService.getByCampanhaIdEJogadorId(
-        campanhaId,
-        usuarioId
-      );
-      setPersonagens(response.data);
-    } catch (err) {
-      setError("Erro ao carregar personagens.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    if (isFocused) {
-      fetchPersonagens();
-    }
-  }, [isFocused]);
+    const fetchFichas = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await Ficha3detService.getByPersonagemId(personagemId);
+        setFichas(response.data);
+      } catch (err) {
+        setError("Erro ao carregar fichas.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFichas();
+  }, [personagemId]);
+
+  const handleEditFicha = (fichaId) => {
+    navigation.navigate("EditarFicha3DeT", { fichaId });
+  };
 
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#0000ff" />
-        <Text>Carregando personagens...</Text>
+        <Text>Carregando fichas...</Text>
       </View>
     );
   }
@@ -66,19 +56,15 @@ const ListaDePersonagensScreen = ({ route, navigation }) => {
     );
   }
 
-  const handleEditPersonagem = (personagemId) => {
-    navigation.navigate("EditarPersonagem", { personagemId });
-  };
-
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Personagens da Campanha</Text>
+      <Text style={styles.title}>Fichas 3DeT</Text>
       <FlatList
-        data={personagens}
+        data={fichas}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => handleEditPersonagem(item.id)}
+            onPress={() => handleEditFicha(item.id)}
             style={styles.listItem}
           >
             <Image
@@ -135,4 +121,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListaDePersonagensScreen;
+export default ListaDeFichas3DeTScreen;
